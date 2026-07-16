@@ -1,78 +1,72 @@
-# Quake I Movement In Unity
-An implementation of quake I's movement in the unity engine.
+# QUnity Engine
 
-which I tried to make as close as possible to the original source code (at least implementation-wise) but the physics also should be accurate, as such - tech from the original game is also possible.
+Quake 1 movement & gameplay framework for Unity.
 
-The codebase is relatively organized and readable with summaries, comments, regions, sources etc.. so if you want to change something it shouldn't be hard to do so.
-Feel free to use it however the MIT license allows you to.
+> ⚠️ **Not a 1:1 port.** Loose recreation. Bugs are features. If you want pixel-perfect accuracy, go play QuakeSpasm.
+> PRs welcome. Bug reports too. Just don't expect id Software level of polish.
 
-VERY IMPORTANT - read the section 'Potential Issues' carefully before working with the controller!
+## Features
 
-Another important thing - this project was made using unity 6000.0.25f1 and it utilizes unity's new input system so take that into consideration when importing the controller into your project.
+### Movement
+- Quake 1 physics — ground friction, air acceleration, bunnyhopping
+- Crouching with camera & collider adjustment
+- Noclip mode
+- Water volumes (Water, Slime, Lava) with buoyancy
+- Fall damage
+- Step-up for stairs & ledges
+- Camera bob & viewmodel sway (V_CalcBob port)
+- Camera roll on strafe
 
-a bit more about accuracy:
+### Weapons
+- Modular weapon system — Melee, SingleShot, Burst (shotgun)
+- Magazine-based ammo with reserve
+- Ammo types — Shells, Nails, Rockets, Cells
+- Reload types — Magazine, Single shell
+- Auto-fire toggle
+- Weapon ownership — collect to unlock
+- BlendShape-based animations
+- Muzzle flash & impact particles
 
-it is important to state that despite it's accuracy to the original movement controller - I did actually take some creative liberties due to the fact that the code was written in a different language and engine, and for the user to have quality of life options. it does not reduce from its accuracy at all, only the way the end user can interact with the codebase provided and its compatibility with the unity game engine. (that also doesn't mean that I copied the code/implementation 1:1 everywhere)
+### Enemies
+- Melee & Ranged types
+- Sight detection with raycast
+- Pain & death animations
+- Gibs on heavy damage
+- Loot drops
 
-GIF's Kinda Low Quality So Sorry In Advance!
+### Console
+- Open/close with tilde (~) or Escape
+- Commands: `noclip`, `god`, `map`, `sv_gravity`, `impulse`, `fov`
+- Cvars: `cl_bob`, `cl_rollangle`, `hud_style`
+- Command history & autoscroll
 
+### HUD
+- 5 styles — center, side split, corners
+- HP, Armor, Ammo with reserve
+- Crosshair
+- Intermission screen with stats
 
-![QuakeUnityMovementGIF_Combined](https://github.com/user-attachments/assets/68319b8b-c07a-4f04-9f04-dd07d9db6bdb)
+### World
+- Pickups — Health, Armor, Ammo, Weapons (respawnable toggle)
+- Teleport & Kill triggers
+- Secret detection with on-screen message
+- End-level trigger with stats screen
+- Pause menu
 
-Showcase Video:
+## Requirements
+- Unity 2022.3+
+- Input System package
 
-https://www.youtube.com/watch?v=6RcVNTvtgJ4
+## Setup
+1. Clone or download this repo
+2. Open in Unity
+3. Install Input System via Package Manager (Window → Package Manager → Unity Registry → Input System)
+4. Open `Scenes/MainMenu` and hit Play
 
-# Sources Used:
+## Credits
+- Original movement system: [International9/Quake-Unity-Movement](https://github.com/International9/Quake-Unity-Movement)
+- Original Quake by id Software (1996)
+- Models & sounds from various Quake mods (Navy Seals, etc.)
 
-https://github.com/id-Software/Quake/blob/master/QW/client/pmove.c (original source code)
-
-https://github.com/myria666/qMovementDoc (Quake I movement paper)
-
-https://github.com/Olezen/UnitySourceMovement (Inspo)
-
-etc..
-
-these helped me a lot in order to understand the movement system.
-
-
-# How To Use:
-
-- download the 'player' folder and put it in your project
-- make sure there are no other active cameras in the scene (reccomended)
-- drag the player prefab from the folder to the scene
-- make sure that the layers 'layerColl' and 'layerGround' in the main movement script are setup (reccomended)
-
-congrats, now use it however you want, go crazy!
-
-
-# Potential Issues:
-
-IMPORTANT: When building out your levels, because the movement and velocity clipping are dependent on accurate normals - use primitive collider for 
-100% accurate normals. unity calculates the normal from boxcast (and other cast functions) on mesh colliders using an approximation (for non convex however it uses interpolate normals) which may 
-not be accurate all the time. meaning collisions may often be very buggy and inconsistent at walls or acute (90 degree) angles so take this into consideration
-
-
-
-if you'd like more details about normal calculation in unity you can check it out here: https://docs.unity3d.com/ScriptReference/RaycastHit-normal.html
-
-luckily - this only happens on walls in the function FlyMove, so if you're using a gameobject with a mesh collider as a floor for example it shouldn't give out any errors at all.
-
-as such - primitive colliders still work the best with the controller and shouldn't have any problems.
-
-
-if there are any issues please report them so i could invastigate, thanks!  
-
-# Features:
-
-The movement system, as of currently, support:
-
-- standard WASD
-- jumping
-- stairs
-- slopes
-- triggers (handled using a rigidbody on the player)
-
-and other features for Quake I's 'physics' (as wall as all of the weird tech in the og game)
-
-however, the movement system does NOT support any water movement or a 'nudgeplayer' function, you could implement those yourself using the custom trace system in the project, helper functions and/or the sources which are linked above.
+## License
+MIT — do whatever. Just don't sue me.
